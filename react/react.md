@@ -57,3 +57,53 @@ const sum = useMemo(() => a + b, [a, b]);
 // useCallback : aaa 변경시만 함수 재생성
 const onClick = useCallback(() => {}, [aaa]);
 ```
+
+14. 렌더링 성능을 향상시키는 방법은?
+- 메모이제이션 : React.memo, useMemo, useCallback 사용
+- Key 최적화 : 배열 map에서 index 대신 고유한 id 사용
+- 함수형 업데이트 : setState(prev => prev + 1) 형태 사용
+- 객체 참조 유지 : 자식에게 props 전달 시 매번 새 객체 생성 방지
+- 디바운싱/쓰로틀링 : 검색창 입력 같은 빈번한 이벤트 처리
+
+15. Key Props를 왜 사용하나요?
+- React가 리스트에서 어떤 항목이 변경/추가/삭제되었는지 식별하기 위해서입니다. key가 없으면 React는 모든 항목을 다시 렌더링합니다.
+- index를 key로 사용하면 항목 순서가 바뀔 때 버그가 발생할 수 있습니다. 고유한 id를 사용해야 합니다
+```tsx
+// index 사용 (순서 변경시 문제)
+{list.map((item, index) => <Item key={index} />)}
+
+// 고유 id 사용
+{list.map((item) => <Item key={item.id} />)}
+```
+
+16. React Query(TanStack Query)란 무엇인가요?
+- 서버 상태를 관리하는 라이브러리로, 비동기 데이터 fetching, 캐싱, 동기화를 자동화합니다.
+간략히 장점
+- 자동 캐싱으로 중복 요청 방지
+- isLoading, error 객체로 상태 분기 간편
+- 서버 상태와 클라이언트 상태 분리 (서버 : TanStack Query, 클라이언트 : Zustand)
+
+17. Context API가 무엇인가요?
+- props drilling 없이 컴포넌트 간 값을 공유하는 React 기능입니다. 주로 전역 상태(테마, 로그인 정보)를 다룰 때 사용합니다.
+- Context API는 성능 최적화 도구가 아닙니다. 값이 자주 변경되면 하위 컴포넌트가 모두 리렌더링되므로, 이런 경우 Zustand 같은 상태 관리 라이브러리가 더 적합합니다.
+
+18. React 18의 주요 변경사항은?
+- Auto Batching: Promise, setTimeout에서도 여러 상태 업데이트를 자동으로 묶어서 리렌더링 최소화
+- 새로운 Root API: ReactDOM.createRoot() 사용 (기존 render() 대체)
+- Concurrent Features: Suspense, useTransition으로 더 부드러운 UX
+- Streaming SSR: Suspense로 페이지 일부를 먼저 보여주고 나머지는 로딩
+
+19. Hydration이 무엇인가요?
+- SSR에서 서버가 보낸 정적 HTML에 클라이언트 측 JavaScript를 연결하는 과정입니다. 서버 HTML + 클라이언트 JS를 매칭해서 인터랙티브하게 만듭니다. Next.js에서 자동으로 처리되며 초기 로딩 속도와 SEO를 개선합니다.
+
+20. 클래스형과 함수형 컴포넌트의 차이는?
+- 클래스형: Lifecycle API, this.props 사용
+- 함수형: Hooks 사용, this 없음
+- 함수형이 더 간결하고 최신 React에서 권장됩니다.
+
+21. 생명주기 메서드란? (레거시)
+- 클래스형 컴포넌트의 생명주기 메서드는 크게 세 단계입니다.
+- Mount: constructor -> render -> componentDidMount
+- Update: shouldComponentUpdate -> render -> componentDidUpdate
+- Unmount: componentWillUnmount
+- 함수형에서는 useEffect로 대체합니다.
