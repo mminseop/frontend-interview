@@ -22,4 +22,38 @@
 - JSX는 JavaScript에 XML을 추가한 문법으로 HTML과 JS를 한 파일에서 작성할 수 있게 해줍니다. React는 JSX를 일반 JavaScript로 변환합니다 (React.createElement()).
 - JSX 규칙은 반드시 하나의 부모 요소로 감싸야 합니다 (Fragment < > < / > 사용 가능) -> Virtual DOM이 변화를 효율적으로 비교하려면 하나의 DOM 트리 구조여야 하기 때문입니다
 
-8
+8. props와 state의 차이는?
+- props : 부모에서 받는 읽기 전용 데이터. 변경 불가능
+- state : 컴포넌트 자신이 관리하는 데이터. 변경 가능 (useState, setState)
+
+9. state를 직접 바꾸지 않고 useState를 사용하는 이유는?
+- React는 메모리 주소 비교로 변경 감지를 합니다. state를 직접 수정하면 메모리 주소가 바뀌지 않아서 React가 변경을 감지하지 못합니다. useState의 setter 함수는 새로운 값으로 새 메모리 주소를 만들어서 리렌더링을 트리거합니다.
+
+10. 제어 컴포넌트와 비제어 컴포넌트의 차이는?
+- 제어 컴포넌트 : state로 입력값을 관리 (value와 onChange 사용)
+- 비제어 컴포넌트 : DOM이 직접 값을 관리 (ref 사용)
+- 제어 컴포넌트는 실시간 유효성 검사가 필요할 때, 비제어 컴포넌트는 파일 업로드처럼 단순 제출만 필요할 때 사용합니다.
+
+11. useEffect와 useMemo의 차이?
+- useEffect : 부수효과(side effect) 처리용 (API 호출, DOM 조작)
+- useMemo : 순수 함수의 결과값 캐싱용
+
+12. useEffect와 useLayoutEffect의 차이는?
+- useEffect : 화면 렌더링(paint) 후 비동기 실행
+- useLayoutEffect : 화면 렌더링(paint) 전 동기 실행
+- useLayoutEffect는 DOM 측정이나 애니메이션 구현처럼 즉시 반응이 필요한 경우에 사용합니다. 대부분의 경우 useEffect로 충분합니다.
+
+13. React에서 메모이제이션은 어떻게 하나요?
+- React.memo: 컴포넌트 메모이제이션 (props 비교)
+- useMemo: 값 메모이제이션 (dependency 배열 비교)
+- useCallback: 함수 메모이제이션 (dependency 배열 비교)
+```tsx
+// React.memo : props 변경시만 리렌더링
+const MemoizedComponent = React.memo(ChildComponent);
+
+// useMemo : a, b 변경시만 재계산
+const sum = useMemo(() => a + b, [a, b]);
+
+// useCallback : aaa 변경시만 함수 재생성
+const onClick = useCallback(() => {}, [aaa]);
+```
