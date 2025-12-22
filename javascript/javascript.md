@@ -74,3 +74,26 @@
 - 이벤트 루프가 스택이 비었는지 확인하고 비었으면 큐에서 콜백을 가져와 실행
 
 마이크로태스크 큐(Promise 등)가 일반 태스크 큐(setTimeout 등)보다 우선순위가 높다
+
+14. 얕은 복사와 깊은 복사의 차이를 설명해주세요
+- 얕은 복사(Shallow Copy)
+- 1단계까지만 값을 복사하고, 내부에 중첩된 객체/배열은 참조만 복사한다
+- 겉으로 보기엔 다른 객체지만, 안쪽 깊은 객체는 여전히 같은 메모리를 바라본다
+```tsx
+const original = { user: { name: 'bbb' } };
+const shallow = { ...original };
+
+shallow.user.name = 'aaa';
+console.log(original.user.name); // 'aaa'  (내부 객체를 공유)
+```
+
+- 깊은 복사(Deep Copy)
+- 중첩된 객체/배열까지 재귀적으로 모두 새로운 메모리 공간에 복사한다
+- 복사본을 수정해도 원본에 영향을 주지 않는다
+```tsx
+const original = { user: { name: 'bbb' } };
+const deep = structuredClone(original); // 또는 lodash cloneDeep 등
+
+deep.user.name = 'aaa';
+console.log(original.user.name); // 'bbb'
+```
