@@ -97,3 +97,20 @@ const deep = structuredClone(original); // 또는 lodash cloneDeep 등
 deep.user.name = 'aaa';
 console.log(original.user.name); // 'bbb'
 ```
+
+- 얕은 복사 = 한 단계만 새 객체 / 깊은 복사 = 안쪽까지 완전히 새 객체
+
+15. 자바스크립트에서 배열과 객체를 직접 수정하지 말고, 새 객체를 만들어 쓰라고 하는 이유는 무엇인가요?
+- React 같은 라이브러리는 참조(메모리 주소) 변경 여부로 변경을 감지한다
+- 원본 배열/객체를 직접 수정하면 참조는 그대로라 변경을 감지하지 못할 수 있다
+- 불변성을 지키면 디버깅이 쉬워지고, 리렌더링 조건 최적화(React.memo, useMemo 등)가 명확해짐
+```tsx
+// 직접 수정
+state.items.push(newItem);
+
+// 새 배열 생성 (불변성 지킴)
+setState(prev => ({
+  ...prev,
+  items: [...prev.items, newItem],
+}));
+```
